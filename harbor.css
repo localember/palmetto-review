@@ -1,0 +1,2394 @@
+/* ============================================================================
+   HARBOR — the static source stylesheet.
+
+   AUTHORED, NOT PORTED. Breakdance's own output is per-element rules keyed on
+   `bde-text-256-492`-style ids; none of that is design. What IS design is the
+   value each of those rules carries. Every value below was read off:
+
+     1. harbor-source/global-settings.json — 13 swatches, Poppins + Oregano,
+        5 presets, container 1280, pad 3% / 75px. A clamp() in a declaration
+        stays a clamp().
+     2. the SERVED CSS of harbor-demo :8088 (post-241.css / post-256.css /
+        presets.css / global-settings.css) — the visual target.
+     3. write-global-type-harbor.php — fluid h1/h2. Not in the raw export;
+        it is a layer of the design (HOUSE-STANDARDS fluid-type).
+
+   THE 13 SWATCHES. Primary is black; the per-client recolour point is CTA.
+   brand.primary_color lands on --har-cta via a :root override the emitter
+   writes. The defaults here are the record's own CTA blue. HOUSE-STANDARDS
+   colour-through-globals: no hardcoded hex in a rule when a token exists.
+   Two extras are marked: the icon-box well (#E2E2E2, in the 3box preset, not
+   a palette swatch) and the hero veil (an alpha of ink the palette cannot
+   express as a stop).
+
+   Session 1: header, hero, icon-boxes.
+   ============================================================================ */
+
+:root {
+  /* ── the record's 13 swatches ──────────────────────────────────────────── */
+  --har-ink:          #000000;   /* Primary / Heading Dark */
+  --har-body:         #1a1a1b;   /* Secondary / Body Dark / Background Dark */
+  --har-white:        #ffffff;   /* Heading Light / Body Light / Background Light */
+  --har-muted:        #57B33E0D; /* Muted */
+  --har-shadow:       #6E82D01A; /* Shadow */
+  --har-cta-default:  #055b9b;   /* CTA — design default (source blue) */
+  --har-comp-1:       #70706c;   /* Comp 1 */
+  --har-comp-2:       #EBBAB9;   /* Comp 2 */
+
+  /* ── served extras (3box preset / hero slide overlay) ──────────────────── */
+  --har-well:         #E2E2E2;
+  --har-card-shadow:  5px 5px 7px 0px rgba(0, 0, 0, 0.314);
+  --har-hero-veil:    rgba(0, 0, 0, 0.561);
+
+  /* Per-client override point. brand.primary_color lands here. */
+  --har-cta:          var(--har-cta-default);
+
+  /* ── type (record: Poppins 400/15px/1.9 body; headings 700/1.2/capitalize)
+     h1/h2 are le_fluid clamps — endpoints preserved from the source ramp. */
+  --har-font-body:    Poppins, sans-serif;
+  --har-font-head:    Poppins, sans-serif;
+  --har-font-script:  Oregano, cursive;
+  --har-base:         15px;
+  --har-lh-body:      1.9;
+  --har-lh-head:      1.2;
+
+  --har-h1:           clamp(36px, 26.61px + 2.609vw, 60px);
+  --har-h2:           clamp(32px, 26.52px + 1.522vw, 46px);
+  --har-h3:           18px;
+  --har-h4:           26px;
+  --har-t-kicker:     14px;
+  --har-t-hero:       clamp(30px, 21.00px + 2.500vw, 53px);
+  --har-t-hero-alt:   clamp(30px, 18.26px + 3.261vw, 60px);
+  --har-t-nav:        13.125px;
+  --har-t-topline:    14px;
+  --har-t-card-title: 20px;
+  --har-t-script:     clamp(30px, 29.61px + 0.109vw, 31px);
+  --har-t-script-lg:  clamp(30px, 26.48px + 0.978vw, 39px);
+  --har-t-cta-btn:    clamp(16px, 14.43px + 0.435vw, 20px);
+  --har-t-welcome-h2: clamp(24px, 21.65px + 0.652vw, 30px);
+  --har-t-welcome-h3: clamp(22px, 19.65px + 0.652vw, 28px);
+  --har-t-eyebrow:    16px;
+  --har-t-svclabel:   clamp(16px, 14.43px + 0.435vw, 20px);
+  --har-t-stack-fore: 42px;
+  --har-t-stack-wm:   62px;
+  --har-watermark:    rgba(95, 94, 94, 0.24);
+  --har-frost:        #FFFFFFBD;
+  --har-overlay:      #0000007D;
+  --har-t-band-h:     clamp(24px, 21.65px + 0.652vw, 30px);
+  --har-t-facts-h:    clamp(20px, 14.52px + 1.522vw, 34px);
+  --har-t-review-h:   clamp(23px, 20.65px + 0.652vw, 29px);
+  --har-t-visit-h:    clamp(35px, 25.22px + 2.717vw, 60px);
+  --har-t-faq-q:      14px;
+  --har-t-foot-kicker: 13px;
+  --har-t-foot-h:     15px;
+  --har-t-foot-link:  14px;
+  --har-t-colophon:   clamp(16px, 15.22px + 0.217vw, 18px);
+  --har-t-legal:      11px;
+  --har-closed:       #B51717;
+
+  /* ── frame ────────────────────────────────────────────────────────────── */
+  --har-maxw:         1280px;
+  --har-gut:          3%;
+  --har-band-pad:     75px;
+  --har-col-gap:      32px;
+  --har-hero-h:       700px;
+  --har-hero-grid:    1250px;
+  --har-icons-pull:   -150px;
+  --har-r-btn:        5px;
+  --har-r-card:       5px;
+  --har-r-img:        12px;
+  --har-dur:          400ms;
+  --har-dur-book:     386ms;
+}
+
+/* ============================================================================
+   BASE
+   ============================================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; overflow-y: scroll; }
+
+body {
+  margin: 0;
+  background: var(--har-white);
+  color: var(--har-body);
+  font-family: var(--har-font-body);
+  font-size: var(--har-base);
+  font-weight: 400;
+  line-height: var(--har-lh-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+img, svg { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+p { margin: 0; }
+ul { margin: 0; padding: 0; list-style: none; }
+button { font: inherit; background: none; border: 0; padding: 0; color: inherit; cursor: pointer; }
+
+h1 {
+  font-family: var(--har-font-head);
+  font-size: var(--har-h1);
+  font-weight: 700;
+  line-height: var(--har-lh-head);
+  text-transform: capitalize;
+  color: var(--har-white);
+  margin: 0;
+}
+h2 {
+  font-family: var(--har-font-head);
+  font-size: var(--har-h2);
+  font-weight: 700;
+  line-height: var(--har-lh-head);
+  text-transform: capitalize;
+  color: var(--har-ink);
+  margin: 0;
+}
+h3 {
+  font-family: var(--har-font-head);
+  font-size: var(--har-h3);
+  font-weight: 700;
+  line-height: var(--har-lh-head);
+  text-transform: uppercase;
+  color: var(--har-ink);
+  margin: 0;
+}
+
+.har-sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+
+/* ============================================================================
+   LAYOUT — a band, and the 1280 container inside it
+   ============================================================================ */
+.har-band { position: relative; background-color: transparent; }
+.har-band__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: var(--har-maxw);
+  margin-inline: auto;
+  padding-inline: var(--har-gut);
+  padding-block: var(--har-band-pad);
+}
+.har-band__inner > * { width: 100%; }
+
+/* ============================================================================
+   COMPONENT FAMILY — buttons
+   Header book is custom (14/24 pad, 5 radius, 15/500, scale 1.2).
+   Icon-box well buttons are the 3box preset (well fill, 3 radius, scale 1.2,
+   hover CTA). The middle card's button is a ghost on CTA ground.
+   ============================================================================ */
+.har-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 24px;
+  border: 1px solid transparent;
+  border-radius: var(--har-r-btn);
+  font-family: var(--har-font-body);
+  font-size: var(--har-base);
+  font-weight: 500;
+  line-height: 1;
+  text-align: center;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: all var(--har-dur) ease-in-out;
+}
+.har-btn--book {
+  background-color: var(--har-cta);
+  color: var(--har-white);
+  border-color: transparent;
+  min-height: 0;
+  transition: all var(--har-dur-book) ease-in-out;
+}
+.har-btn--book:hover {
+  background-color: var(--har-cta);
+  color: var(--har-white);
+  transform: scale(1.2);
+}
+.har-btn--well {
+  background-color: var(--har-well);
+  color: var(--har-ink);
+  border-color: transparent;
+  border-radius: 3px;
+}
+.har-btn--well:hover {
+  background-color: var(--har-cta);
+  color: var(--har-white);
+  transform: scale(1.2);
+}
+.har-btn--ghost {
+  background-color: transparent;
+  color: var(--har-white);
+  border: 3px solid var(--har-white);
+  border-radius: 3px;
+  font-size: var(--har-t-cta-btn);
+}
+.har-btn--ghost:hover {
+  background-color: transparent;
+  color: var(--har-white);
+}
+
+/* ============================================================================
+   BAND — header
+   Two rows: CTA-to-white gradient topline (NAP + socials) and a white bar
+   (logo 20% / nav+book 75%). Sticky-scroll-slide class on the live builder;
+   at rest it is position:relative, 0 pad, white ground.
+   ============================================================================ */
+.har-header {
+  position: relative;
+  z-index: 200;
+  width: 100%;
+  background-color: var(--har-white);
+  box-shadow: none;
+}
+.har-header__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0;
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+}
+.har-topline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  max-width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  /* Live uses the `background` shorthand, which zeros background-color. */
+  background: linear-gradient(97deg, var(--har-cta) 47.17948717948718%, rgb(255, 255, 255) 85.12820512820512%);
+}
+.har-topline__inner {
+  display: flex;
+  flex-direction: row;
+  gap: var(--har-col-gap);
+  width: var(--har-maxw);
+  max-width: 100%;
+}
+.har-topline__left {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 20px;
+  width: 74.33%;
+}
+.har-topline__right {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 20px;
+  width: 25.67%;
+}
+.har-topline__item {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  color: var(--har-body);
+  font-size: var(--har-base);
+  line-height: var(--har-lh-body);
+  text-align: left;
+}
+.har-topline__item svg {
+  display: block;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  fill: var(--har-white);
+  margin-right: 15px;
+}
+.har-topline__item span {
+  color: var(--har-white);
+  font-size: var(--har-t-topline);
+}
+.har-topline__visit {
+  color: var(--har-body);
+  font-size: var(--har-t-topline);
+  line-height: 1.9;
+  margin: 0;
+  text-align: left;
+}
+.har-social {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 12px;
+}
+.har-social__icon {
+  display: flex;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border-radius: 0;
+  background-color: transparent;
+  opacity: 1;
+  transition: transform var(--har-dur), opacity var(--har-dur), fill var(--har-dur);
+}
+.har-social__icon svg {
+  width: 18px;
+  height: 18px;
+  fill: var(--har-body);
+}
+.har-social__icon:hover {
+  transform: scale(1.1);
+  opacity: 0.8;
+}
+.har-social__icon:hover svg { fill: var(--har-cta); }
+
+.har-header__main {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: var(--har-maxw);
+  margin-inline: auto;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 1px;
+}
+.har-header__brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  width: auto;
+  flex-shrink: 0;
+}
+.har-header__logo {
+  width: 285px;
+  max-width: 100%;
+  height: auto;
+  object-fit: fill;
+}
+.har-header__navwrap {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 60px;
+  flex: 1;
+  width: auto;
+  min-width: 0;
+}
+.har-nav { display: flex; }
+.har-nav__list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0;
+}
+.har-nav__item { position: relative; display: list-item; }
+.har-nav__item::before {
+  content: "";
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  top: 0;
+  height: 2px;
+  background: var(--har-ink);
+  transform: scaleY(0);
+  transform-origin: top center;
+  pointer-events: none;
+  transition: transform var(--har-dur), background-color var(--har-dur);
+}
+.har-nav__item:hover { color: var(--har-cta); }
+.har-nav__item:hover::before {
+  transform: none;
+  background: var(--har-cta);
+}
+.har-nav__link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  font-family: var(--har-font-head);
+  font-size: var(--har-t-nav);
+  font-weight: 600;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--har-ink);
+  white-space: nowrap;
+  transition: color var(--har-dur), background-color var(--har-dur);
+}
+.har-nav__item:hover .har-nav__link,
+.har-nav__link:hover { color: var(--har-cta); }
+.har-nav__item.is-active .har-nav__link { color: var(--har-cta); }
+
+.har-nav__drop {
+  display: none;
+  position: absolute;
+  top: calc(100% + 35px);
+  left: 0;
+  /* 220px + 50px of right padding wrapped "The Gonstead System" onto two lines. The panel sizes to
+     its longest item now, with a floor rather than a fixed width, so a longer label never wraps. */
+  min-width: 240px;
+  width: max-content;
+  padding: 20px 24px 10px 10px;
+  background: var(--har-white);
+  border-radius: 0;
+  z-index: 10;
+}
+.har-nav__item:hover .har-nav__drop { display: block; }
+.har-nav__drop a {
+  display: block;
+  white-space: nowrap;
+  padding: 10px 20px;
+  color: var(--har-body);
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.har-nav__drop a:hover { color: var(--har-ink); }
+
+.har-menu-toggle {
+  display: none;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+}
+.har-menu-toggle span,
+.har-menu-toggle span::before,
+.har-menu-toggle span::after {
+  display: block; width: 22px; height: 2px; background: var(--har-ink); position: relative;
+}
+.har-menu-toggle span::before,
+.har-menu-toggle span::after { content: ""; position: absolute; left: 0; }
+.har-menu-toggle span::before { top: -7px; }
+.har-menu-toggle span::after { top: 7px; }
+
+@media (max-width: 1119px) {
+  .har-nav__list { display: none; }
+  .har-nav__list.is-open {
+    display: flex; flex-direction: column; position: absolute;
+    top: 100%; left: 0; right: 0; background: var(--har-white); z-index: 20;
+  }
+  .har-menu-toggle { display: flex; }
+  .har-header__navwrap { flex: 0; }
+  .har-topline__item--addr { display: none; }
+}
+
+@media (max-width: 767px) {
+  .har-header__main { flex-direction: column; gap: 20px; }
+  .har-header__brand, .har-header__navwrap { width: 100%; }
+  .har-topline__visit { display: none; }
+}
+
+/* ============================================================================
+   BAND — hero
+   Full-bleed photo, 700px stage, 56% ink veil, 1250px 2-col grid (copy + empty).
+   Single frame — John waived a slider here (2026-08-25).
+   ============================================================================ */
+.har-hero {
+  position: relative;
+  background-color: transparent;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.har-hero__stage {
+  position: relative;
+  height: var(--har-hero-h);
+  max-width: 100%;
+  margin-bottom: 20px;
+}
+.har-hero__slide {
+  display: flex;
+  position: relative;
+  height: var(--har-hero-h);
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-image: linear-gradient(var(--har-hero-veil), var(--har-hero-veil));
+}
+.har-hero__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--har-col-gap);
+  width: var(--har-hero-grid);
+  max-width: 100%;
+  align-items: stretch;
+}
+.har-hero__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  text-align: left;
+}
+.har-hero__kicker {
+  color: var(--har-white);
+  font-family: var(--har-font-head);
+  font-size: var(--har-t-kicker);
+  font-weight: 700;
+  line-height: 1.2;
+  text-transform: capitalize;
+  margin: 0;
+}
+.har-hero__headline {
+  color: var(--har-white);
+  font-family: var(--har-font-head);
+  font-size: var(--har-t-hero);
+  font-weight: 700;
+  line-height: 1.2;
+  text-transform: none;
+  margin: 0;
+}
+.har-hero__sub {
+  width: 520px;
+  max-width: 100%;
+}
+.har-hero__sub p {
+  color: var(--har-white);
+  font-size: var(--har-base);
+  font-weight: 400;
+  line-height: var(--har-lh-body);
+  margin: 0;
+}
+
+@media (max-width: 1119px) {
+  .har-hero__grid { width: 93%; }
+}
+@media (max-width: 1023px) {
+  .har-hero__grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 767px) {
+  .har-hero__stage, .har-hero__slide { height: auto; min-height: 420px; }
+}
+
+/* ============================================================================
+   BAND — icon boxes
+   Three cards on a 3-col grid, pulled -150px over the hero. Outer two use
+   the 3box preset (white, well icon, gray button). Middle card is CTA ground
+   with Oregano title and a ghost button.
+   ============================================================================ */
+.har-icons { position: relative; }
+.har-icons__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  max-width: var(--har-maxw);
+  margin-inline: auto;
+  padding: var(--har-band-pad) var(--har-gut) 0;
+}
+.har-icons__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--har-col-gap);
+  width: 100%;
+  margin-top: var(--har-icons-pull);
+  z-index: 1;
+  align-items: stretch;
+}
+.har-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+  background: var(--har-white);
+  border-radius: var(--har-r-card);
+  box-shadow: var(--har-card-shadow);
+  padding: 30px;
+  transition: all var(--har-dur);
+}
+.har-card:hover { transform: scale(1.05); }
+.har-card--cta {
+  background: var(--har-cta);
+}
+.har-card__icon {
+  display: flex;
+  width: 61px;
+  height: 61px;
+  padding: 18px;
+  border-radius: 999px;
+  background: var(--har-well);
+  transition: all 0.3s ease-in;
+}
+.har-card__icon svg {
+  width: 25px;
+  height: 25px;
+  fill: var(--har-ink);
+}
+.har-card:hover .har-card__icon { transform: rotate(360deg); }
+.har-card--cta .har-card__icon {
+  width: 60px;
+  height: 60px;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  font-size: 60px;
+}
+.har-card--cta .har-card__icon svg {
+  width: 60px;
+  height: 60px;
+  fill: var(--har-white);
+}
+.har-card__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+}
+.har-card__title {
+  color: var(--har-ink);
+  font-family: var(--har-font-head);
+  font-size: var(--har-t-card-title);
+  font-weight: 700;
+  line-height: 1.2;
+  text-transform: capitalize;
+  margin: 0 0 10px;
+}
+.har-card--cta .har-card__title {
+  width: 100%;
+  color: var(--har-white);
+  font-family: var(--har-font-script);
+  font-size: var(--har-t-script-lg);
+  font-weight: 700;
+  line-height: 1.2;
+  text-transform: none;
+  margin: 0;
+}
+.har-card__body {
+  color: var(--har-body);
+  font-size: var(--har-base);
+  font-weight: 400;
+  line-height: var(--har-lh-body);
+  margin: 0;
+}
+.har-card .har-btn {
+  margin-top: 20px;
+}
+
+@media (max-width: 1023px) {
+  .har-icons__grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 767px) {
+  .har-icons__grid { grid-template-columns: 1fr; margin-top: 0; }
+}
+
+/* ============================================================================
+   BAND — welcome
+   Stacked "#1" heading, two-column intro, three service photos that lift 20px
+   on hover.
+   ============================================================================ */
+.har-welcome { position: relative; margin-bottom: -1px; }
+.har-welcome__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: var(--har-maxw);
+  margin-inline: auto;
+  padding: 112px var(--har-gut) 72px;
+}
+.har-welcome__inner > * { width: 100%; }
+.har-welcome__inner > .har-stack-wrap {
+  width: auto;
+  padding-bottom: 60px;
+}
+
+.har-stack {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  font-weight: 700;
+}
+.har-stack__watermark {
+  position: absolute;
+  top: 11%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  width: max-content;
+  max-width: none;
+  margin: 0;
+  color: var(--har-watermark);
+  font-family: var(--har-font-head);
+  font-size: var(--har-t-stack-wm);
+  font-weight: 700;
+  line-height: 1.9;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.har-stack__fore {
+  position: relative;
+  z-index: 3;
+  margin: 0;
+  color: var(--har-ink);
+  font-family: var(--har-font-head);
+  font-size: var(--har-t-stack-fore);
+  font-weight: 700;
+  line-height: 1.2;
+  text-transform: capitalize;
+  text-align: center;
+  text-shadow: 5px 7px 7px rgba(0, 0, 0, 0.145);
+}
+
+.har-welcome__row {
+  display: flex;
+  flex-direction: row;
+  gap: var(--har-col-gap);
+  width: 100%;
+  margin-bottom: 109px;
+}
+.har-welcome__copy,
+.har-welcome__media {
+  width: 50%;
+}
+.har-welcome__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  text-align: left;
+}
+.har-welcome__media {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.har-eyebrow {
+  /* Stacking context so the highlight can sit at z-index -1 (behind U / W)
+     without dropping behind the section. */
+  isolation: isolate;
+  margin: 0;
+  color: var(--har-ink);
+  font-family: var(--har-font-head);
+  font-size: var(--har-t-eyebrow);
+  font-weight: 700;
+  line-height: 1.2;
+  text-transform: capitalize;
+  text-align: left;
+}
+.har-eyebrow--center { text-align: center; }
+.har-annotate {
+  position: relative;
+  display: inline-block;
+  overflow: visible;
+}
+.har-annotate__word {
+  /* Widen the box RN measures so the swipe goes past the last glyph
+     (ABOUT→US, NEW→Experience) without opening a layout gap. */
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+  color: var(--har-white);
+  padding: 0 0.45em;
+  margin: 0 -0.45em;
+}
+.har-annotate svg.rough-annotation {
+  z-index: -1;
+}
+.har-welcome__h2 {
+  margin: 0;
+  width: 100%;
+  color: var(--har-ink);
+  font-family: var(--har-font-head);
+  font-size: var(--har-t-welcome-h2);
+  font-weight: 700;
+  line-height: 1.2;
+  text-transform: capitalize;
+  text-align: left;
+}
+.har-welcome__body {
+  margin: 0 0 20px;
+  width: 100%;
+  color: var(--har-body);
+  font-size: var(--har-base);
+  line-height: var(--har-lh-body);
+  text-align: left;
+}
+.har-welcome__body p { margin: 0 0 15px; }
+.har-welcome__body p:last-child { margin-bottom: 0; }
+.har-welcome__photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: var(--har-r-img);
+}
+
+.har-welcome__midh {
+  margin: 0;
+  color: var(--har-ink);
+  font-family: var(--har-font-head);
+  font-size: var(--har-t-welcome-h3);
+  font-weight: 700;
+  line-height: 1.2;
+  text-transform: capitalize;
+  text-align: center;
+}
+.har-welcome__midsub {
+  margin: 20px 0 40px;
+  color: var(--har-body);
+  font-size: var(--har-base);
+  line-height: var(--har-lh-body);
+  text-align: center;
+}
+
+.har-svccard-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--har-col-gap);
+  width: 100%;
+  margin-bottom: 48px;
+  align-items: stretch;
+}
+.har-svccard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  color: var(--har-ink);
+  transition: transform var(--har-dur) ease-out;
+}
+.har-svccard:hover { transform: translateY(-20px); }
+.har-svccard__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: var(--har-r-img);
+}
+.har-svccard__label {
+  display: block;
+  margin-top: 8px;
+  color: var(--har-body);
+  font-family: var(--har-font-head);
+  font-size: var(--har-t-svclabel);
+  font-weight: 500;
+}
+
+@media (max-width: 1119px) {
+  .har-welcome__row { flex-direction: column; }
+  .har-welcome__copy, .har-welcome__media { width: 100%; }
+}
+@media (max-width: 1023px) {
+  .har-svccard-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 767px) {
+  .har-stack__watermark { font-size: 84%; }
+  .har-stack__fore { font-size: 90%; }
+  .har-svccard-grid { grid-template-columns: 1fr; }
+}
+
+/* ============================================================================
+   CONDITIONS — OUR SERVICES + six flip cards
+   ============================================================================ */
+.har-conditions {
+  background-color: var(--har-comp-1);
+}
+.har-conditions__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 30px;
+  width: 100%;
+  max-width: var(--har-maxw);
+  margin-inline: auto;
+  padding: 96px var(--har-gut);
+}
+.har-eyebrow--light { color: var(--har-white); }
+.har-conditions__h {
+  margin: 0 0 40px;
+  color: var(--har-white);
+  font-family: var(--har-font-head);
+  font-size: var(--har-t-band-h);
+  font-weight: 700;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.har-conditions__intro {
+  display: flex;
+  gap: var(--har-col-gap);
+  width: 100%;
+  text-align: left;
+  align-items: normal;
+}
+.har-conditions__photo,
+.har-conditions__copy { width: 50%; }
+.har-conditions__photo img {
+  width: 523px;
+  max-width: 100%;
+  height: 294px;
+  object-fit: cover;
+  display: block;
+  border-radius: var(--har-r-img);
+}
+.har-conditions__copy { color: var(--har-white); }
+.har-conditions__copy p + p { margin-top: 1em; }
+.har-conditions__gridh {
+  margin: 60px 0 40px;
+  color: var(--har-white);
+  font-family: var(--har-font-head);
+  font-size: var(--har-t-band-h);
+  font-weight: 700;
+  line-height: 1.2;
+  text-transform: uppercase;
+  text-align: center;
+}
+.har-flip-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--har-col-gap);
+  width: 100%;
+  align-items: stretch;
+}
+.har-flip {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: 300px;
+  width: 100%;
+  max-width: 400px;
+  margin-inline: auto;
+  border-radius: 10px;
+  perspective: 1000px;
+}
+.har-flip__scene {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  transition-duration: 1000ms;
+  transform-style: preserve-3d;
+  border-radius: 10px;
+  outline: none;
+}
+.har-flip:hover .har-flip__scene,
+.har-flip__scene:focus { transform: rotateY(180deg); }
+.har-flip__front,
+.har-flip__back {
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.har-flip__front { transform: rotateY(0deg); }
+.har-flip__back { transform: rotateY(180deg); }
+.har-flip__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.har-flip__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.72);
+}
+.har-flip__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 15px;
+  text-align: center;
+  color: var(--har-white);
+}
+.har-flip__title {
+  margin: 2px 0;
+  color: var(--har-white);
+  font-family: var(--har-font-head);
+  font-size: var(--har-h3);
+  font-weight: 700;
+  letter-spacing: normal;
+  text-transform: uppercase;
+  text-align: center;
+}
+.har-flip__body {
+  margin: 8px 0 0;
+  color: var(--har-white);
+  font-size: var(--har-base);
+  line-height: 1.5;
+}
+.har-flip__more {
+  margin-top: 10px;
+  display: inline-block;
+  padding: 5px 15px;
+  border-radius: 10px;
+  background: var(--har-cta);
+  color: var(--har-white);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.har-flip__more:hover { background: var(--har-ink); color: var(--har-white); }
+
+/* ============================================================================
+   REVIEWS — frosted panel on a fixed photo
+   ============================================================================ */
+.har-reviews {
+  position: relative;
+  background-image: var(--har-reviews-bg);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+.har-reviews::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--har-overlay);
+}
+.har-reviews__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  max-width: var(--har-maxw);
+  margin-inline: auto;
+  padding: 40px var(--har-gut) 60px;
+}
+.har-reviews__panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 40px 0 60px;
+  border-radius: 12px;
+  background: var(--har-frost);
+  text-align: center;
+}
+.har-reviews__h {
+  margin: 8px 0 0;
+  color: var(--har-body);
+  font-family: var(--har-font-head);
+  font-size: var(--har-t-review-h);
+  font-weight: 700;
+  line-height: 1.9;
+  text-transform: uppercase;
+}
+.har-reviews__slider {
+  position: relative;
+  width: 100%;
+  max-width: 720px;
+  margin: 24px auto 0;
+  min-height: 160px;
+}
+/* THE REVIEWS SLIDER USED TO CHANGE HEIGHT ON EVERY SLIDE (John, 2026-09-14: "we need to have that
+   as a set height as it scrolls otherwise it bounces around"). Every review was absolutely positioned
+   EXCEPT the active one, which went back to `position: relative` — so the track's height was whatever
+   the current review happened to need, and the whole band jumped each time it advanced. It is worst
+   with real reviews, which vary from one line to a paragraph.
+   The fix is to stack them in ONE GRID CELL instead: every slide occupies the same cell, so the track
+   is as tall as the TALLEST review and never moves. No fixed pixel height to guess at, and nothing to
+   re-tune when a client's reviews are longer than the ones it was measured against. */
+.har-reviews__track {
+  position: relative;
+  min-height: 140px;
+  display: grid;
+  align-items: center;
+}
+.har-review {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transition: opacity 600ms ease;
+  pointer-events: none;
+  text-align: center;
+}
+.har-review.is-on {
+  opacity: 1;
+  pointer-events: auto;
+}
+.har-review__body {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--har-body);
+}
+.har-review__name {
+  margin-top: 16px;
+  font-size: var(--har-t-colophon);
+  font-weight: 700;
+  color: var(--har-ink);
+}
+.har-reviews__dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 24px;
+}
+.har-reviews__dot {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border-radius: 0;
+  background: var(--har-cta);
+  opacity: 0.35;
+}
+.har-reviews__dot.is-on { opacity: 1; }
+
+/* ============================================================================
+   FACTS
+   ============================================================================ */
+.har-facts { position: relative; background: transparent; margin-bottom: -1px; }
+.har-facts__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--har-col-gap);
+  max-width: var(--har-maxw);
+  margin-inline: auto;
+  padding: 120px var(--har-gut) 160px;
+}
+.har-facts__copy, .har-facts__media { width: 50%; }
+.har-facts__h {
+  margin: 0;
+  font-size: var(--har-t-facts-h);
+  font-weight: 700;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: var(--har-ink);
+}
+.har-facts__body {
+  margin-top: 31px;
+  text-align: left;
+  color: var(--har-body);
+}
+.har-facts__media img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: var(--har-r-img);
+}
+.har-divider {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 320px;
+  color: var(--har-comp-1);
+  line-height: 0;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+.har-divider svg {
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 320px;
+}
+.har-divider--top {
+  top: -1px;
+  bottom: auto;
+}
+.har-divider--top svg {
+  top: 0;
+  bottom: auto;
+  transform: scaleY(-1);
+}
+
+/* ============================================================================
+   FAQ
+   ============================================================================ */
+.har-faq {
+  position: relative;
+  background: var(--har-comp-1);
+}
+.har-faq__triangles {
+  position: absolute;
+  inset: 0;
+  background-image: var(--har-faq-triangles);
+  background-size: 700px auto;
+  background-repeat: no-repeat;
+  background-position: 50% 0;
+  opacity: 0.05;
+  pointer-events: none;
+}
+.har-faq__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 30px;
+  max-width: var(--har-maxw);
+  margin-inline: auto;
+  padding: 96px var(--har-gut);
+}
+.har-faq__h {
+  margin: 0;
+  color: var(--har-white);
+  font-family: var(--har-font-head);
+  font-size: var(--har-t-band-h);
+  font-weight: 700;
+  line-height: 1.2;
+  text-transform: none;
+  text-align: center;
+}
+.har-faq__h .har-annotate__word { color: var(--har-white); }
+.har-faq__sub {
+  color: var(--har-white);
+  max-width: 720px;
+  margin: 0;
+}
+.har-faq__list {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px 32px;
+  align-items: normal;
+  text-align: left;
+}
+.har-faq__col {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.har-faq__item {
+  background: var(--har-white);
+  border-radius: 30px;
+  overflow: visible;
+  border: 0 solid #000;
+}
+.har-faq__q {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding: 16px 20px;
+  color: var(--har-ink);
+  font-size: var(--har-t-faq-q);
+  font-weight: 700;
+  text-align: left;
+}
+.har-faq__item.is-open .har-faq__q,
+.har-faq__item.is-open .har-faq__icon { color: var(--har-cta); }
+.har-faq__icon {
+  flex: 0 0 14px;
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+  transition: transform 200ms ease;
+}
+.har-faq__item.is-open .har-faq__icon { transform: rotate(180deg); }
+.har-faq__a {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 280ms ease;
+  color: var(--har-ink);
+  font-size: var(--har-base);
+  line-height: var(--har-lh-body);
+}
+.har-faq__a > div { overflow: hidden; }
+.har-faq__a p { margin: 0; padding: 0 20px 16px; }
+.har-faq__item.is-open .har-faq__a { grid-template-rows: 1fr; }
+
+/* ============================================================================
+   EXPERTISE
+   ============================================================================ */
+.har-expertise { position: relative; background: var(--har-white); }
+.har-expertise__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--har-col-gap);
+  max-width: var(--har-maxw);
+  margin-inline: auto;
+  padding: 160px var(--har-gut) 72px;
+}
+.har-expertise__lead,
+.har-expertise__rows { width: 50%; }
+.har-expertise__h {
+  margin: 8px 0 28px;
+  max-width: 601px;
+  font-size: clamp(36px, 24px + 1.8vw, 52px);
+  font-weight: 700;
+  line-height: 1.15;
+  text-transform: capitalize;
+  color: var(--har-ink);
+}
+.har-expertise__photo {
+  display: block;
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: var(--har-r-img);
+  box-shadow: 5px 20px 20px 0 #00000075;
+}
+.har-expertise__rows {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 56px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  position: relative;
+}
+.har-expertise__rows::before {
+  content: "";
+  position: absolute;
+  left: 23px;
+  top: 24px;
+  bottom: 24px;
+  width: 1px;
+  background: #d0d0d0;
+}
+.har-expertise__row {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  position: relative;
+}
+.har-expertise__num {
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--har-ink);
+  border-radius: 50%;
+  background: var(--har-white);
+  box-shadow: 0 0 0 10px var(--har-white);
+  color: var(--har-ink);
+  font-family: var(--har-font-head);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+  position: relative;
+  z-index: 1;
+}
+.har-expertise__row p { margin: 0; color: var(--har-body); }
+
+/* ============================================================================
+   FOOTER — explore / visit card / colophon
+   ============================================================================ */
+.har-explore {
+  background: var(--har-white);
+  border-top: 1px solid var(--har-muted);
+}
+.har-explore__inner {
+  max-width: var(--har-maxw);
+  margin-inline: auto;
+  padding: 56px var(--har-gut) 80px;
+  text-align: center;
+}
+.har-explore__kicker {
+  margin-bottom: 14px;
+  color: var(--har-cta);
+  font-size: var(--har-t-foot-kicker);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: left;
+}
+.har-explore__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin-top: 8px;
+  text-align: left;
+}
+.har-explore__h {
+  margin-bottom: 12px;
+  color: var(--har-ink);
+  font-size: var(--har-t-foot-h);
+  font-weight: 700;
+}
+.har-explore__list {
+  columns: 2;
+  column-gap: 28px;
+}
+.har-explore__list a {
+  display: block;
+  color: var(--har-cta);
+  font-size: var(--har-t-foot-link);
+  line-height: 1.9;
+}
+.har-explore__list a:hover { text-decoration: underline; }
+
+.har-visit {
+  position: relative;
+  z-index: 2;
+  margin-bottom: -120px;
+}
+.har-visit__shell {
+  max-width: var(--har-maxw);
+  margin-inline: auto;
+  padding-inline: var(--har-gut);
+}
+.har-visit__inner {
+  display: flex;
+  align-items: normal;
+  gap: 0;
+  width: 100%;
+  background: var(--har-white);
+  border-radius: 8px;
+  box-shadow: 0 12px 24px 0 #00000050;
+  overflow: hidden;
+}
+.har-visit__media {
+  width: 35%;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  /* John, 2026-09-14: the logo sat at the TOP of this column against a much taller copy block, so
+     the card read as top-heavy and unfinished. justify-content centres it across, align-items
+     centres it down; only the first was ever set. */
+  align-items: center;
+}
+.har-visit__logo { width: auto; height: 55px; }
+.har-visit__copy {
+  width: 65%;
+  padding: 40px;
+  text-align: left;
+}
+.har-visit__copy .har-btn {
+  border-radius: 3px;
+  flex-direction: row-reverse;
+  transition: all 0.4s ease-in-out;
+}
+.har-visit__kicker {
+  margin: 28px 0 12px;
+  color: var(--har-body);
+}
+.har-visit__h {
+  margin: 0;
+  font-size: var(--har-t-visit-h);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--har-body);
+  text-transform: none;
+  text-align: left;
+}
+.har-visit__body {
+  max-width: 600px;
+  margin: 0 auto 36px;
+  color: var(--har-body);
+}
+
+.har-colophon {
+  background: var(--har-body);
+  padding: 0;
+}
+.har-colophon__inner {
+  display: flex;
+  gap: 30px;
+  max-width: var(--har-maxw);
+  margin: 0 auto;
+  padding: 220px var(--har-gut) 15px;
+  text-align: center;
+  color: var(--har-white);
+}
+.har-colophon__col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+.har-colophon__col--brand { width: 30%; }
+.har-colophon__col--hours { width: 40%; }
+.har-colophon__col--map { width: 30%; }
+.har-colophon__label {
+  color: var(--har-white);
+  font-size: var(--har-t-colophon);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--har-cta);
+  text-underline-offset: 12px;
+  text-decoration-thickness: 2px;
+}
+.har-colophon__addr {
+  margin-top: 15px;
+  color: var(--har-white);
+  font-size: var(--har-base);
+}
+.har-colophon__social { display: flex; gap: 10px; }
+.har-colophon__social a {
+  display: flex;
+  width: 38px;
+  height: 38px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  background: var(--har-cta);
+  padding: 10px;
+  transition: background 400ms;
+}
+.har-colophon__social a svg { width: 18px; height: 18px; fill: var(--har-white); }
+.har-colophon__social a:hover { background: var(--har-white); }
+.har-colophon__social a:hover svg { fill: var(--har-cta); }
+.har-hours { width: 100%; max-width: 280px; }
+.har-hours__row {
+  display: flex;
+  justify-content: space-between;
+  padding: 2px 0;
+  color: var(--har-white);
+  font-size: var(--har-base);
+}
+.har-hours__row.is-closed { color: var(--har-closed); }
+.har-colophon__map {
+  width: 100%;
+  min-height: 180px;
+  border: 0;
+  border-radius: 4px;
+  background: #2a2a2a;
+}
+.har-colophon__legal {
+  max-width: var(--har-maxw);
+  margin: 40px auto 0;
+  padding-top: 15px;
+  border-top: 1px solid #282828;
+  text-align: center;
+}
+.har-colophon__copy {
+  color: var(--har-white);
+  font-size: var(--har-t-legal);
+}
+.har-colophon__links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 16px;
+  margin-top: 8px;
+}
+.har-colophon__links a {
+  color: #cfcfcf;
+  font-size: var(--har-t-legal);
+}
+
+@media (max-width: 1119px) {
+  .har-faq__list { grid-template-columns: 1fr; }
+  .har-conditions__intro,
+  .har-facts__inner,
+  .har-expertise__inner,
+  .har-visit__inner,
+  .har-colophon__inner { flex-direction: column; }
+  .har-conditions__photo, .har-conditions__copy,
+  .har-facts__copy, .har-facts__media,
+  .har-expertise__lead, .har-expertise__rows,
+  .har-visit__media, .har-visit__copy,
+  .har-colophon__col--brand, .har-colophon__col--hours, .har-colophon__col--map { width: 100%; }
+  .har-flip-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .har-reviews__grid { grid-template-columns: 1fr; }
+  .har-explore__grid, .har-explore__list { grid-template-columns: 1fr; columns: 1; }
+}
+@media (max-width: 767px) {
+  .har-flip-grid { grid-template-columns: 1fr; }
+  .har-colophon__inner { padding-top: 160px; }
+  .har-member { flex-direction: column; }
+  .har-member__photo, .har-member__copy { width: 100%; }
+}
+
+/* ============================================================================
+   ABOUT — page title + team roster
+   ============================================================================ */
+.har-pagehero {
+  position: relative;
+  margin-top: 10px;
+  background: var(--har-pagehero-bg) center / cover no-repeat;
+  text-align: center;
+}
+.har-pagehero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #0000009A;
+}
+.har-pagehero__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+}
+.har-pagehero__title {
+  margin: 0;
+  color: var(--har-white);
+  text-shadow: 5px 5px 3px #0000004D;
+}
+.har-team__inner {
+  max-width: var(--har-maxw);
+  margin: 0 auto;
+  padding: 75px var(--har-gut);
+  text-align: left;
+}
+.har-member {
+  display: flex;
+  align-items: normal;
+  gap: var(--har-col-gap);
+  margin-bottom: 50px;
+}
+.har-member__photo {
+  width: 397px;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border: 2px solid var(--har-ink);
+  border-radius: var(--har-r-img);
+  box-shadow: -5px 10px 20px 0 #00000075;
+}
+.har-member__copy {
+  width: 65.06%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.har-member__role {
+  margin: 0;
+  color: var(--har-cta);
+  font-weight: 700;
+}
+.har-member__name {
+  margin: 0;
+  color: var(--har-body);
+  font-size: clamp(48px, 43.30px + 1.304vw, 60px);
+  font-weight: 700;
+  line-height: 1em;
+  text-transform: none;
+}
+.har-member__teaser { margin: 0; }
+.har-acc__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--har-ink);
+  font-weight: 700;
+  padding: 8px 0;
+}
+.har-acc__chev {
+  width: 0.45em;
+  height: 0.45em;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg);
+}
+.har-acc__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 280ms ease;
+}
+.har-acc__panel > div { overflow: hidden; }
+.har-acc.is-open .har-acc__panel { grid-template-rows: 1fr; }
+.har-acc__panel p { margin: 0 0 30px; }
+
+/* ============================================================================
+   HUB pages (SERVICES + CONDITIONS) — intro, card grid, dark CTA
+   Same chrome. Copy and card count differ; the frame does not.
+   ============================================================================ */
+.har-svcintro {
+  background: var(--har-white);
+}
+.har-svcintro__inner {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: var(--har-band-pad) var(--har-gut);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+.har-svcintro__kicker {
+  margin: 0 0 14px;
+  color: var(--har-cta);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.har-svcintro__h {
+  margin: 0 0 16px;
+  color: var(--har-ink);
+}
+.har-svcintro__sub {
+  margin: 0;
+  color: var(--har-body);
+  font-size: 19px;
+  line-height: 1.6;
+}
+.har-svcgrid {
+  background: color-mix(in srgb, var(--har-cta) 7%, var(--har-white));
+}
+.har-svcgrid__inner {
+  width: 100%;
+  max-width: var(--har-maxw);
+  margin: 0 auto;
+  padding: var(--har-band-pad) var(--har-gut);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  align-items: stretch;
+}
+.har-offering {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  min-width: 0;
+  padding: 24px 26px 26px;
+  background: var(--har-white);
+  border: 1px solid var(--har-muted);
+  border-radius: 14px;
+}
+.har-offering__title {
+  margin: 0 0 10px;
+  color: var(--har-ink);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: var(--har-lh-head);
+  text-transform: uppercase;
+}
+.har-offering__body {
+  margin: 0 0 16px;
+  color: var(--har-body);
+  font-size: var(--har-base);
+  line-height: 1.6;
+}
+.har-btn--outline {
+  background: transparent;
+  color: var(--har-cta);
+  border: 1px solid var(--har-cta);
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 18px;
+}
+.har-btn--outline:hover {
+  background: var(--har-cta);
+  color: var(--har-white);
+  border-color: var(--har-cta);
+}
+.har-svccta {
+  background: var(--har-body);
+  text-align: center;
+}
+.har-svccta__inner {
+  width: 100%;
+  max-width: calc(720px + 6%);
+  margin: 0 auto;
+  padding: 72px var(--har-gut);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.har-svccta__h {
+  margin: 0 0 14px;
+  color: var(--har-white);
+  text-align: center;
+}
+.har-svccta__body {
+  margin: 0 0 26px;
+  color: var(--har-white);
+  font-size: 18px;
+  line-height: 1.6;
+  text-align: center;
+}
+.har-btn--solid {
+  background: var(--har-cta);
+  color: var(--har-white);
+  border-color: transparent;
+  border-radius: 6px;
+  font-weight: 600;
+}
+.har-btn--solid:hover {
+  background: var(--har-cta);
+  color: var(--har-white);
+}
+@media (max-width: 1023px) {
+  .har-svcgrid__inner { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 767px) {
+  .har-svcgrid__inner { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ============================================================================
+   SERVICE-SINGLE + CONDITION-SINGLE — shared chrome (posts 340 / 285)
+   ============================================================================ */
+.har-sshero { background: var(--har-white); }
+.har-sshero--plain .har-sshero__inner { display: block; }
+.har-sshero--plain .har-sshero__copy { width: 100%; max-width: 820px; }
+/* John, 2026-09-15: the three pills were stacked down the right instead of spanning the bottom.
+   They sat INSIDE the 46% image column, so a row that wraps had nowhere to go but downwards, one
+   pill per line. The reference build (cuttingedgechiro.com/arthritis/) has them as a sibling of the
+   two-column row, full width: `display:flex; flex-direction:row; flex-wrap:wrap; gap:12px;
+   margin-top:28px`, which is what our rule already said. Only the containment was wrong. So the
+   copy+media pair becomes a row and the hero inner stacks that row above the pills. */
+.har-sshero__inner {
+  width: 100%;
+  max-width: var(--har-maxw);
+  margin: 0 auto;
+  padding: var(--har-band-pad) var(--har-gut);
+  display: flex;
+  flex-direction: column;
+}
+.har-sshero__row {
+  display: flex;
+  align-items: center;
+  gap: 52px;
+  width: 100%;
+}
+.har-sshero__copy { width: 54%; min-width: 0; }
+.har-sshero__h { margin: 0 0 18px; color: var(--har-ink); }
+.har-sshero__sub {
+  margin: 0;
+  font-size: 19px;
+  line-height: 1.6;
+}
+.har-sshero__actions { margin-top: 26px; }
+.har-sshero__media { width: 46%; min-width: 0; }
+.har-sshero__frame {
+  overflow: hidden;
+  border-radius: 14px;
+}
+.har-sshero__img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+.har-sshero__pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+.har-sspill {
+  /* matched to the reference: a pill never breaks mid-phrase, it moves to the next line whole. */
+  flex-shrink: 0;
+  white-space: nowrap;
+  margin: 0;
+  padding: 10px 18px;
+  background: color-mix(in srgb, var(--har-cta) 7%, var(--har-white));
+  border: 1px solid var(--har-muted);
+  border-radius: 999px;
+  color: var(--har-body);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.har-ssprose { background: var(--har-white); }
+.har-ssprose__inner {
+  width: 100%;
+  max-width: 820px;
+  margin: 0 auto;
+  padding: var(--har-band-pad) var(--har-gut);
+  text-align: left;
+}
+.har-sscallout {
+  display: flex;
+  flex-direction: column;
+  padding: 24px 28px 26px;
+  margin-bottom: 34px;
+  background: color-mix(in srgb, var(--har-cta) 7%, var(--har-white));
+  border: 1px solid var(--har-muted);
+  border-radius: 14px;
+}
+.har-sscallout__p {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.65;
+}
+.har-ssprose__lead {
+  margin: 0 0 26px;
+  font-size: 19px;
+  line-height: 1.7;
+}
+.har-ssprose h2 {
+  margin: 12px 0 16px;
+  color: var(--har-ink);
+}
+.har-ssprose p {
+  margin: 0 0 18px;
+  font-size: 17px;
+  line-height: 1.75;
+}
+.har-ssprose__list {
+  margin: 0 0 22px;
+  padding-left: 1.2em;
+  list-style: disc;
+}
+.har-ssprose__list li {
+  margin: 0 0 8px;
+  font-size: 17px;
+  line-height: 1.7;
+}
+.har-ssprose__list--tight li { font-size: 16px; }
+.har-ssbox {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 8px 0 26px;
+  padding: 22px 26px 24px;
+  border-radius: 14px;
+}
+.har-ssbox--cta { border: 1px solid var(--har-cta); }
+.har-ssbox--evidence {
+  gap: 8px;
+  padding: 20px 24px;
+  background: color-mix(in srgb, var(--har-cta) 7%, var(--har-white));
+}
+.har-ssbox--evidence p { margin: 0; font-size: 18px; line-height: 1.6; }
+.har-ssbox__note { margin: 0; font-size: 14px; line-height: 1.6; }
+.har-ssbox__src { font-size: 13px; line-height: 1.5; }
+.har-ssbox__src a { color: var(--har-cta); text-decoration: underline; }
+.har-ssframe {
+  width: 100%;
+  max-width: var(--har-maxw);
+  margin: 0 auto;
+  padding: var(--har-band-pad) var(--har-gut);
+  text-align: left;
+}
+.har-ssframe h2 { margin: 0 0 24px; color: var(--har-ink); }
+.har-sswhy,
+.har-ssfaq,
+.har-ssrelated {
+  background: color-mix(in srgb, var(--har-cta) 7%, var(--har-white));
+}
+.har-sswhy__grid,
+.har-ssrelated__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+.har-sswhy__card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 22px 24px 24px;
+  background: var(--har-white);
+  border: 1px solid var(--har-muted);
+  border-radius: 14px;
+}
+.har-sswhy__title {
+  margin: 0 0 10px;
+  font-size: 19px;
+  font-weight: 700;
+  line-height: var(--har-lh-head);
+  text-transform: uppercase;
+  color: var(--har-ink);
+}
+.har-sswhy__card p { margin: 0; font-size: 15px; line-height: 1.6; }
+.har-offering--lift {
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.06);
+  gap: 12px;
+  padding-bottom: 24px;
+}
+.har-ssrelated .har-offering__title { font-size: 19px; }
+.har-sssteps { background: var(--har-white); }
+.har-sssteps__list { display: flex; flex-direction: column; gap: 18px; }
+.har-ssstep { display: flex; align-items: flex-start; gap: 18px; }
+.har-ssstep__n {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: var(--har-cta);
+  color: var(--har-white);
+  font-size: 17px;
+  font-weight: 700;
+}
+.har-ssstep__title {
+  margin: 0 0 6px;
+  font-size: 19px;
+  font-weight: 700;
+  line-height: var(--har-lh-head);
+  text-transform: uppercase;
+  color: var(--har-ink);
+}
+.har-ssstep p { margin: 0; font-size: 16px; line-height: 1.65; }
+.har-ssfaq__list { display: flex; flex-direction: column; }
+.har-ssfaq .har-faq__item {
+  background: transparent;
+  border-radius: 0;
+  border-top: none;
+  border-bottom: 1px solid var(--har-muted);
+}
+.har-ssfaq .har-faq__item:last-child { border-bottom: 0; }
+.har-ssfaq .har-faq__q {
+  font-size: clamp(16px, 14.83px + 0.326vw, 19px);
+  font-weight: 600;
+  padding: 16px 0;
+}
+.har-ssfaq .har-faq__icon { color: var(--har-cta); }
+.har-ssfaq .har-faq__a p { padding: 0 0 16px; font-size: 16px; }
+@media (max-width: 1023px) {
+  .har-sshero__inner { flex-direction: column; align-items: stretch; }
+  .har-sshero__copy, .har-sshero__media { width: 100%; }
+  .har-sswhy__grid, .har-ssrelated__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 767px) {
+  .har-sswhy__grid, .har-ssrelated__grid { grid-template-columns: minmax(0, 1fr); }
+  .har-sspill { white-space: normal; }
+}
+
+/* ============================================================================
+   CONTACT — title band (shared pagehero) + form
+   ============================================================================ */
+.har-contact { background: transparent; }
+.har-contact__inner {
+  width: 100%;
+  max-width: calc(560px + 6%);
+  margin: 0 auto;
+  padding: var(--har-band-pad) var(--har-gut);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  text-align: center;
+}
+.har-contact__intro {
+  margin: 0 0 13px;
+  color: var(--har-body);
+}
+.har-contact__form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  text-align: left;
+}
+.har-field { display: block; width: 100%; }
+.har-field__input {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 3px;
+  background: var(--har-white);
+  color: var(--har-body);
+  font-family: var(--har-font-body);
+  font-size: var(--har-base);
+  line-height: 1.4;
+}
+.har-field__input--area { min-height: 120px; resize: vertical; }
+.har-btn--submit {
+  width: 100%;
+  background: var(--har-cta);
+  color: var(--har-white);
+  border-width: 0;
+  border-style: solid;
+  border-color: transparent;
+  font-weight: 500;
+  text-transform: uppercase;
+  padding: 16px 35px;
+}
+.har-btn--submit:hover {
+  background: var(--har-body);
+  color: var(--har-white);
+  transform: scale(1.2);
+}
+
+/* ============================================================================
+   THANK-YOU — title band + photo and call
+   ============================================================================ */
+.har-thanks { background: transparent; }
+.har-thanks__wrap {
+  width: 100%;
+  max-width: var(--har-maxw);
+  margin: 0 auto;
+  padding: var(--har-band-pad) var(--har-gut);
+}
+.har-thanks__inner {
+  display: flex;
+  align-items: stretch;
+  gap: var(--har-col-gap);
+}
+.har-thanks__media {
+  width: 35%;
+  display: flex;
+}
+.har-thanks__frame {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  overflow: hidden;
+  border: 2px solid var(--har-cta);
+  border-radius: var(--har-r-img);
+  box-shadow: -5px 10px 10px 0 #08080870;
+}
+.har-thanks__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.har-thanks__copy {
+  width: 65%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+.har-thanks__h {
+  margin: 0;
+  color: var(--har-body);
+  font-size: clamp(19px, 17.04px + 0.543vw, 24px);
+  font-weight: 400;
+  line-height: var(--har-lh-body);
+}
+.har-thanks__body { margin: 10px 0 40px; }
+.har-btn--call {
+  background: var(--har-cta);
+  color: var(--har-white);
+  border-color: transparent;
+  border-radius: 10px;
+  font-weight: 500;
+  min-height: 0;
+}
+.har-btn--call:hover {
+  background: var(--har-cta);
+  color: var(--har-white);
+  transform: scale(1.1);
+}
+@media (max-width: 1119px) {
+  .har-thanks__inner { flex-direction: column; }
+  .har-thanks__media, .har-thanks__copy { width: 100%; }
+  .har-thanks__frame { min-height: 240px; }
+}
+
+/* ============================================================================
+   OFFER — 50/50 scheduler slot + map
+   ============================================================================ */
+.har-offer { background: transparent; }
+.har-offer__wrap {
+  width: 100%;
+  max-width: var(--har-maxw);
+  margin: 0 auto;
+  padding: var(--har-band-pad) var(--har-gut);
+}
+.har-offer__inner {
+  display: flex;
+  align-items: normal;
+  gap: 0;
+}
+.har-offer__book {
+  width: 50%;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+.har-bookslot {
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 24px 12px;
+  min-height: 780px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+}
+.har-bookslot__h {
+  margin: 0 0 12px;
+  color: var(--har-ink);
+  font-size: var(--har-h2);
+  font-weight: 700;
+}
+.har-bookslot__body { margin: 0 0 18px; }
+.har-offer__mapwrap {
+  width: 50%;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+.har-offer__map {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 8px;
+}
+@media (max-width: 1023px) {
+  .har-offer__inner { flex-direction: column; }
+  .har-offer__book, .har-offer__mapwrap { width: 100%; }
+  .har-bookslot { min-height: 0; }
+  .har-offer__map { min-height: 400px; }
+}
+
+/* ============================================================================
+   PATIENT STORIES — heading + review cards
+   ============================================================================ */
+.har-stories { background: transparent; }
+.har-stories__inner {
+  width: 100%;
+  max-width: var(--har-maxw);
+  margin: 0 auto;
+  padding: var(--har-band-pad) var(--har-gut) 40px;
+}
+.har-stories__h {
+  margin: 0 0 40px;
+  color: var(--har-ink);
+  text-align: center;
+}
+.har-stories__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px;
+}
+.har-story {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  background: var(--har-white);
+  border-radius: 8px;
+  box-shadow: 0 20px 32px 0 #00000010;
+}
+.har-story__quote {
+  width: 100%;
+  margin: 0 0 16px;
+  color: var(--har-ink);
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.7;
+  text-align: left;
+}
+.har-story__name {
+  width: 100%;
+  margin: 0 0 8px;
+  color: var(--har-ink);
+  font-weight: 700;
+  text-align: left;
+}
+@media (max-width: 767px) {
+  .har-stories__grid { grid-template-columns: 1fr; }
+}
+
+/* ============================================================================
+   LEGAL — heading + prose, all seven pages
+   ============================================================================ */
+.har-legal { background: transparent; }
+.har-legal__wrap {
+  width: 100%;
+  max-width: var(--har-maxw);
+  margin: 0 auto;
+  padding: var(--har-band-pad) var(--har-gut);
+}
+.har-legal__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.har-legal h1 {
+  color: var(--har-ink);
+  margin: 0 0 0.67em;
+}
+.har-legal p { margin: 0 0 1em; }
+.har-legal ol, .har-legal ul { margin: 0 0 1em; padding-left: 1.3em; list-style: decimal; }
+.har-legal ul { list-style: disc; }
+.har-legal li { margin: 0 0 0.4em; }
+.har-legal b { font-weight: 700; }
+
+/* Entrance: visible by default; .har-js hides then reveals. Never visibility:hidden. */
+.har-js [data-enter] {
+  opacity: 0;
+  transform: translateX(-64px);
+  transition: opacity 1200ms ease, transform 1200ms ease;
+}
+.har-js [data-enter="right"] { transform: translateX(64px); }
+.har-js [data-enter].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .har-flip__scene { transition: none; }
+  .har-flip:hover .har-flip__scene,
+  .har-flip__scene:focus { transform: none; }
+  .har-js [data-enter] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .har-review { transition: none; }
+  .har-faq__a { transition: none; }
+  .har-divider animate { animation: none; }
+}
+
+/* Catalog prose figures (2026-09-15). The Gonstead pages carry a picture per component, which is how
+   our own published version reads. Sized so a 242px circular tile sits beside its heading without
+   dominating, and so a full-width photo still behaves. */
+.har-ssfigure {
+  margin: 8px 0 22px;
+}
+.har-ssfigure img {
+  display: block;
+  max-width: 242px;
+  width: 100%;
+  height: auto;
+  border-radius: 999px;
+}
+.har-ssfigure figcaption {
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--har-muted-ink, var(--har-body));
+}
+
+/* THE NAV WAS DESIGNED FOR SIX ITEMS (2026-09-15). Adding the two Gonstead pages made eight, and at
+   1400px the last link overlapped the Book Appointment button by ~100px — measured, not guessed. Each
+   link carries 20px of padding a side, so eight items spend 320px on padding alone.
+   Tightened only BELOW 1500px, so a wide desktop renders exactly as every existing Harbor client does
+   today and nothing about their header moves. If a client ever needs more than eight, the answer is a
+   dropdown for a pair, and that is a fleet decision rather than a per-client one. */
+/* A nav carrying more than six items. Emitted as a class because the header is width-capped, so no
+   viewport query can tell a crowded nav from a comfortable one. */
+.har-nav--tight .har-nav__link { padding-left: 8px; padding-right: 8px; }
+@media (max-width: 1399px) {
+  .har-nav--tight .har-nav__link { padding-left: 6px; padding-right: 6px; font-size: calc(var(--har-t-nav) * 0.95); }
+}
+/* ⚠️ THE FIRST VERSION OF THIS CAPPED THE FIX AT 1499px AND BROKE THE COMMONEST SCREENS THERE ARE.
+   The reasoning was "leave wide desktops untouched", which sounded careful and put a hole straight
+   through 1500-1900: a 14" MacBook is 1512, and at 1512 the nav overlapped the logo by 65px on one
+   side and the Book button by 65px on the other. Measured, both sides, which is what John saw.
+   The nav needs ~1014px for eight items at the full 20px padding, and a 1512px header only has ~818
+   to give it. Tightening now runs to 1899px; above that the full padding genuinely fits.
+   AND THE SECOND ATTEMPT WAS WRONG TOO, for a better reason. Capping the fix at 1899px still left
+   1920 broken, and the tell was in the numbers: the overlap was an identical -65px at 1512 and at
+   1920. A layout that ignores a 400px difference in viewport is not responding to the viewport at
+   all. The header is capped at --har-maxw, so a wider screen gives the nav nothing. The cause is the
+   ITEM COUNT and the fix now keys off that, applied at every width.
+   MEASURED with eight items: every width clear on both sides, logo and button. Six items or fewer
+   never gets the class, so no existing Harbor client's header moves by a pixel. */

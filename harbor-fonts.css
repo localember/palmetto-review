@@ -1,0 +1,25 @@
+/* Self-hosted faces. The woff2 files are md5-identical to the ones :8088 serves
+   (poppins_latin_400_normal.woff2 / poppins_latin_700_normal.woff2 /
+   oregano_latin_400_normal.woff2). STATIC cuts: Poppins has no variable master.
+   Nav weight 600 synthesises from the 400 face on both builds. */
+@font-face {
+  font-family: Poppins;
+  src: url("assets/fonts/Poppins_400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: Poppins;
+  src: url("assets/fonts/Poppins_700.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: Oregano;
+  src: url("assets/fonts/Oregano_400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
