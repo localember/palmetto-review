@@ -107,6 +107,16 @@
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; overflow-y: scroll; }
 
+/* 🔴 THE PAGE MUST NEVER SCROLL SIDEWAYS, AND TWO DELIBERATE DESIGN CHOICES MAKE IT (2026-09-17).
+   (1) The entrance animation parks every unrevealed element at translateX(±64px) -- off the side of
+   the page, by design, until it slides in. (2) `.har-stack__watermark` is `white-space: nowrap;
+   width: max-content`, so the faint word behind the welcome label is 850px wide whatever the
+   viewport is. Both are meant to sit outside the page; neither is meant to be reachable. Measured
+   on Palmetto: 533px of document in a 375px phone, and still 48px over at tablet. A breakpoint
+   cannot chase this -- the offset overflows at every width where content is near the edge -- so it
+   is clipped once, here. `clip` and not `hidden`: hidden would make the body a scroll container.
+   ⚠️ There is no `position: sticky` in this design; if one is ever added, re-check this line. */
+body { overflow-x: clip; }
 body {
   margin: 0;
   background: var(--har-white);
@@ -450,6 +460,30 @@ h3 {
   z-index: 10;
 }
 .har-nav__item:hover .har-nav__drop { display: block; }
+/* ⚠️ A DROPDOWN THAT OPENS ACROSS A GAP CANNOT BE REACHED (Raquel Heisse, 2026-09-17: "when you
+   hover over Gonstead it doesn't let you select between the two dropdown choices"). The panel sits
+   35px below the nav item and only exists while the ITEM is hovered, so the pointer crosses 35px of
+   un-hovered space on the way down and the panel vanishes under it. The offset is the design and
+   stays; the fix is an invisible bridge across the gap that hit-tests as the nav item.
+   🔴 IT MUST HANG OFF THE ITEM, NOT THE PANEL. The first attempt put the bridge on
+   `.har-nav__drop::before` -- the textbook trick -- and it measured perfectly and still did not work:
+   the gap is inside the HEADER's own box, which paints over a strip belonging to the panel below it
+   (`document.elementFromPoint` in the middle of the gap returns `har-header__main`, not the panel).
+   Hung off the item, the bridge is a descendant drawn above its own ancestor's background, so it
+   wins the hit test. PROVEN BY CLICKING THROUGH IT, not by reading the CSS back. */
+/* ⚠️ DESKTOP ONLY. Below 1120px the nav becomes a stacked drawer, where a 35px strip hanging off
+   each item would sit on top of the NEXT item and eat its tap. There is no hover gap to bridge on
+   a touch drawer in the first place. */
+@media (min-width: 1120px) {
+  .har-nav__item::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    height: 35px;
+  }
+}
 .har-nav__drop a {
   display: block;
   white-space: nowrap;
@@ -487,6 +521,26 @@ h3 {
   .har-menu-toggle { display: flex; }
   .har-header__navwrap { flex: 0; }
   .har-topline__item--addr { display: none; }
+  /* ⚠️ A HOVER DROPDOWN IS UNREACHABLE ON A PHONE (2026-09-17). The drawer showed "Gonstead" and
+     nothing under it, because the panel only appears on :hover -- which a touch screen does not
+     have. "Dr. Gonstead" had no route to it from the menu at all. In a stacked drawer there is no
+     reason to hide the children: they lay out inline, indented, as part of the list. Same complaint
+     the client raised on desktop, in its worse form. */
+  .har-nav__list.is-open .har-nav__drop {
+    display: block;
+    position: static;
+    min-width: 0;
+    width: auto;
+    padding: 0 0 6px;
+  }
+  .har-nav__list.is-open .har-nav__drop a {
+    padding: 8px 20px;
+    font-weight: 500;
+    text-align: center;
+  }
+  /* The drawer centres every row; without this the parent of a submenu stretches to the wider
+     list item and its label drifts left of the others. */
+  .har-nav__list.is-open .har-nav__link { justify-content: center; }
 }
 
 @media (max-width: 767px) {
@@ -536,6 +590,13 @@ h3 {
   align-items: flex-start;
   gap: 20px;
   text-align: left;
+  /* 🔴 WITHOUT THIS THE WHOLE PAGE SCROLLS SIDEWAYS ON A PHONE (2026-09-17). `.har-hero__sub` is
+     `width: 520px; max-width: 100%`, and a grid item defaults to `min-width: auto` -- so the track
+     grows to fit the 520px child instead of the child shrinking to the track, and the child's
+     `max-width: 100%` then resolves against the blown-out parent and constrains nothing. 375px
+     viewport, 533px document. Same family as the flex/grid intrinsic-width trap in CLAUDE.md
+     reflex 3: the container is where you fix it, once. */
+  min-width: 0;
 }
 .har-hero__kicker {
   color: var(--har-white);

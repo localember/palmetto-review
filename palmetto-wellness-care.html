@@ -1,8 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="robots" content="noindex, nofollow"/>
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 🔴 NOINDEX IS THE SOURCE DEFAULT AND build.py's LIVE STAGE IS WHAT REMOVES IT (build.py:637,
+     "the one thing standing between a built site and a site Google is allowed to read"). Harbor's
+     emitter never wrote it -- sage's does -- so a Harbor client's REVIEW PREVIEW published her real
+     name, address and phone at a public URL with nothing telling Google to stay out. The live
+     preview only has it because somebody added it by hand last round; a rebuild would have dropped
+     it silently. Found 2026-09-17 while shipping Palmetto's client edits. -->
+<meta name="robots" content="noindex, nofollow">
 <title>Wellness &amp; Maintenance Chiropractic Care in Ocala, FL</title>
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/Poppins_400.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/Poppins_700.woff2" crossorigin>
@@ -56,7 +63,7 @@
           </ul>
         </nav>
       </div>
-      <a class="har-btn har-btn--book" data-sd="header.book" href="palmetto-contact-us.html">Book Appointment</a>
+      <a class="har-btn har-btn--book" data-sd="header.book" href="palmetto-special.html">Book Appointment</a>
       <button class="har-menu-toggle" type="button" aria-label="Open Menu"
               aria-expanded="false"><span></span></button>
     </div>
@@ -71,7 +78,7 @@
       <h1 class="har-sshero__h" data-sd="svc.h1">Wellness care in Ocala</h1>
       <p class="har-sshero__sub">Ongoing chiropractic care in Ocala for people who would rather keep moving well than wait for the next problem, at a pace that fits your life and your body.</p>
       <div class="har-sshero__actions">
-        <a class="har-btn har-btn--solid" href="palmetto-contact-us.html">Book an appointment</a>
+        <a class="har-btn har-btn--solid" href="palmetto-special.html">Book an appointment</a>
       </div>
     </div>
     <div class="har-sshero__media">
@@ -96,7 +103,7 @@
     <p class="har-ssprose__lead">The work that keeps you feeling well is not the same work that got you out of pain. Here is what ongoing care is for, who tends to value it, and what a sensible pace looks like.</p>
     <h2>What is wellness care?</h2>
     <p>Once an acute problem has calmed down, the strain that produced it has usually not gone anywhere: the same job, the same desk, the same miles. Wellness care is periodic visits chosen to stay ahead of that rather than to fix a specific complaint, the same way people keep up exercise or regular dental visits.</p>
-    <p>How often is a clinical judgement, not a package. We set a pace from your exam and how you respond to care, review it as we go, and adjust it rather than hold you to a number picked on your first day.</p>
+    <p>How often you come in is a clinical judgment. We set a pace from your exam and how you respond to care, and we continue to reassess as we go and adjust the frequency as needed.</p>
     <h2>Who tends to value it?</h2>
     <p>It suits people whose day-to-day life is hard on their body and who would rather stay ahead of trouble than react to it.</p>
     <ul class="har-ssprose__list">
@@ -105,11 +112,11 @@
       <li>Anyone whose old problem tends to creep back when they let things slide.</li>
       <li>People who simply feel and move better with occasional, ongoing care.</li>
     </ul>
-    <p>Most people in this group came in with a problem, got it settled, and would rather not go through it a second time.</p>
+    <p>Most people in this group came in with a problem, got it settled, and would rather not go through it a second time. To be clear, we want your care to be based on what is appropriate for you and your goals.</p>
     <h2>How long do people stay on it?</h2>
-    <p>That varies, and it is genuinely your call. Some people come in a few times a year when they feel things tightening up. Others keep a steadier rhythm because their work or their sport asks a lot of them and they can tell the difference. We give you our recommendation after the exam and revisit it as we go.</p>
+    <p>It depends on your goals. Some people genuinely feel and function better with periodic care and choose it for that reason, the same way they choose to keep exercising. Others come in a few times a year when they feel things tightening up. We give you our recommendation after the exam and revisit it as we go.</p>
     <h2>What does a plan look like?</h2>
-    <p>Usually a light, spaced-out rhythm rather than frequent visits: a check-in every so often, set to how you are doing and what your body is asking for. We review it as we go and adjust the pace to match, rather than hold you to a schedule set on day one.</p>
+    <p>Usually a spaced-out rhythm rather than frequent visits: a periodic check-in, adjusted to how you are doing and what your body is asking for. We continue to reassess as we go and adjust the frequency as needed.</p>
     <h2>What does it cost, and do you take insurance?</h2>
     <p>Most insurance covers care for an active problem rather than ongoing wellness visits, so wellness care is often out of pocket. We will always be clear about the numbers up front so you can decide whether it is worth it to you.</p>
     <div class="har-ssbox har-ssbox--cta">
@@ -126,7 +133,7 @@
   <div class="har-svccta__inner">
     <h2 class="har-svccta__h" data-sd="svc.ctah">Stay well, on your terms.</h2>
     <p class="har-svccta__body">Same-week visits for new patients. Come as you are, we will take it from there.</p>
-    <a class="har-btn har-btn--solid" href="palmetto-contact-us.html">Book your first visit</a>
+    <a class="har-btn har-btn--solid" href="palmetto-special.html">Book your first visit</a>
   </div>
 </section>
 <section class="har-ssfaq" data-sd="svc.faq">
@@ -137,7 +144,7 @@
       <button class="har-faq__q" type="button" aria-expanded="false" aria-controls="har-svc-faq-1" id="har-svc-faq-1-btn">
         <span>How long would I keep coming?</span><svg class="har-faq__icon" viewBox="0 0 8 12" fill="none" aria-hidden="true"><path d="M.59 10.59 5.17 6 .59 1.41 2 0l6 6-6 6-1.41-1.41Z"/></svg>
       </button>
-      <div class="har-faq__a" id="har-svc-faq-1" role="region" aria-labelledby="har-svc-faq-1-btn"><div><p>That is a conversation rather than a policy. We give you a recommendation after the exam and revisit it as we go. Some people come a few times a year, others keep a steadier rhythm because their work asks a lot of them. The decision is always yours.</p></div></div>
+      <div class="har-faq__a" id="har-svc-faq-1" role="region" aria-labelledby="har-svc-faq-1-btn"><div><p>It depends on your goals. We give you a recommendation after the exam and revisit it as we go. Some people come a few times a year, others keep a steadier rhythm because their work asks a lot of them. The decision is always yours.</p></div></div>
     </div>
     <div class="har-faq__item">
       <button class="har-faq__q" type="button" aria-expanded="false" aria-controls="har-svc-faq-2" id="har-svc-faq-2-btn">
@@ -149,7 +156,7 @@
       <button class="har-faq__q" type="button" aria-expanded="false" aria-controls="har-svc-faq-3" id="har-svc-faq-3-btn">
         <span>How often would I come?</span><svg class="har-faq__icon" viewBox="0 0 8 12" fill="none" aria-hidden="true"><path d="M.59 10.59 5.17 6 .59 1.41 2 0l6 6-6 6-1.41-1.41Z"/></svg>
       </button>
-      <div class="har-faq__a" id="har-svc-faq-3" role="region" aria-labelledby="har-svc-faq-3-btn"><div><p>Usually a light, spaced-out rhythm rather than frequent visits, set to how you are doing. We review it as we go and adjust the pace to match.</p></div></div>
+      <div class="har-faq__a" id="har-svc-faq-3" role="region" aria-labelledby="har-svc-faq-3-btn"><div><p>Usually a spaced-out rhythm rather than frequent visits, set to how you are doing. We continue to reassess as we go and adjust the frequency as needed.</p></div></div>
     </div>
     <div class="har-faq__item">
       <button class="har-faq__q" type="button" aria-expanded="false" aria-controls="har-svc-faq-4" id="har-svc-faq-4-btn">
@@ -161,7 +168,7 @@
       <button class="har-faq__q" type="button" aria-expanded="false" aria-controls="har-svc-faq-5" id="har-svc-faq-5-btn">
         <span>Can I stop whenever I want?</span><svg class="har-faq__icon" viewBox="0 0 8 12" fill="none" aria-hidden="true"><path d="M.59 10.59 5.17 6 .59 1.41 2 0l6 6-6 6-1.41-1.41Z"/></svg>
       </button>
-      <div class="har-faq__a" id="har-svc-faq-5" role="region" aria-labelledby="har-svc-faq-5-btn"><div><p>Of course. There is no contract and no prepaid block. Tell us you want to pause or stop and we will make a note of where you got to, so picking it back up later is easy.</p></div></div>
+      <div class="har-faq__a" id="har-svc-faq-5" role="region" aria-labelledby="har-svc-faq-5-btn"><div><p>Of course. Tell us you want to pause or stop and we will make a note of where you got to, so picking it back up later is easy.</p></div></div>
     </div>
     </div>
   </div>
@@ -196,7 +203,7 @@
         <p class="har-visit__kicker">Ready to get started?</p>
         <p class="har-visit__h" data-sd="footer.visith">Book An Appointment</p>
         <p class="har-visit__body" data-sd="footer.visitbody">Call us at (352) 554-2545 or book your first visit online.</p>
-        <a class="har-btn har-btn--book" data-sd="footer.visitbtn" href="palmetto-contact-us.html">Come see what we can do for you!</a>
+        <a class="har-btn har-btn--book" data-sd="footer.visitbtn" href="palmetto-special.html">Come see what we can do for you!</a>
       </div>
     </div>
     </div>
@@ -213,13 +220,13 @@
       <div class="har-colophon__col har-colophon__col--hours">
         <p class="har-colophon__label">HOURS</p>
         <div class="har-hours" data-sd="footer.hours">
-        <div class="har-hours__row"><span>Monday</span><span></span></div>
-        <div class="har-hours__row"><span>Tuesday</span><span></span></div>
-        <div class="har-hours__row"><span>Wednesday</span><span></span></div>
-        <div class="har-hours__row"><span>Thursday</span><span></span></div>
-        <div class="har-hours__row"><span>Friday</span><span></span></div>
-        <div class="har-hours__row"><span>Saturday</span><span></span></div>
-        <div class="har-hours__row"><span>Sunday</span><span></span></div>
+        <div class="har-hours__row is-closed"><span>Monday</span><span>Closed</span></div>
+        <div class="har-hours__row"><span>Tuesday</span><span>9:00am - 3:00pm</span></div>
+        <div class="har-hours__row is-closed"><span>Wednesday</span><span>Closed</span></div>
+        <div class="har-hours__row"><span>Thursday</span><span>9:00am - 3:00pm</span></div>
+        <div class="har-hours__row is-closed"><span>Friday</span><span>Closed</span></div>
+        <div class="har-hours__row"><span>Saturday</span><span>9:00am - 12:00pm</span></div>
+        <div class="har-hours__row is-closed"><span>Sunday</span><span>Closed</span></div>
         </div>
       </div>
       <div class="har-colophon__col har-colophon__col--map">
@@ -229,7 +236,7 @@
       </div>
     </div>
     <div class="har-colophon__legal">
-      <p class="har-colophon__copy">Copyright © 2026 Local Ember. All Rights Reserved.</p>
+      <p class="har-colophon__copy">Copyright © 2026 Palmetto Chiropractic. All Rights Reserved.</p>
       <div class="har-colophon__links" data-sd="footer.legal">
       <a href="palmetto-accessibility.html">Accessibility</a>
       <a href="palmetto-anti-discrimination.html">Anti-Discrimination</a>

@@ -1,8 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="robots" content="noindex, nofollow"/>
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 🔴 NOINDEX IS THE SOURCE DEFAULT AND build.py's LIVE STAGE IS WHAT REMOVES IT (build.py:637,
+     "the one thing standing between a built site and a site Google is allowed to read"). Harbor's
+     emitter never wrote it -- sage's does -- so a Harbor client's REVIEW PREVIEW published her real
+     name, address and phone at a public URL with nothing telling Google to stay out. The live
+     preview only has it because somebody added it by hand last round; a rebuild would have dropped
+     it silently. Found 2026-09-17 while shipping Palmetto's client edits. -->
+<meta name="robots" content="noindex, nofollow">
 <title>Who We Are - Palmetto Chiropractic</title>
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/Poppins_400.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/Poppins_700.woff2" crossorigin>
@@ -56,7 +63,7 @@
           </ul>
         </nav>
       </div>
-      <a class="har-btn har-btn--book" data-sd="header.book" href="palmetto-contact-us.html">Book Appointment</a>
+      <a class="har-btn har-btn--book" data-sd="header.book" href="palmetto-special.html">Book Appointment</a>
       <button class="har-menu-toggle" type="button" aria-label="Open Menu"
               aria-expanded="false"><span></span></button>
     </div>
@@ -75,10 +82,10 @@
       <div class="har-member__copy">
         <p class="har-member__role">Chiropractor</p>
         <h2 class="har-member__name" data-sd="about.name">Dr. Raquel Heisse, D.C.</h2>
-        <p class="har-member__teaser">Dr. Raquel Heisse practices the Gonstead method, a careful, specific approach that looks for the one joint causing the problem rather than adjusting everything at once.</p>
+        <p class="har-member__teaser">Dr. Raquel is proud to bring specific, individualized Gonstead chiropractic care to individuals and families in Ocala.</p>
       <div class="har-acc">
         <button class="har-acc__btn" type="button" aria-expanded="false" aria-controls="har-more-0">Read More<span class="har-acc__chev" aria-hidden="true"></span></button>
-        <div class="har-acc__panel" id="har-more-0"><div><p>She began her career in Missouri, then practiced in Clermont, Florida before opening Palmetto Chiropractic in Ocala. She is also a certified animal chiropractor, and she travels to barns and homes across the region to work on horses and dogs. Very few chiropractors are trained to do both.</p></div></div>
+        <div class="har-acc__panel" id="har-more-0"><div><p>She takes the time to listen, thoroughly explain her findings, and answer each patient’s questions so they feel informed and confident in their care. In September 2026, she opened Palmetto Chiropractic’s Ocala office after seven years of practicing alongside Dr. John Neff in Clermont. A Missouri native raised in Wentzville, Dr. Raquel earned her Bachelor of Science in Animal Science from the University of Missouri–Columbia. Before becoming a chiropractor, she worked in the competitive horse-training industry. Her experience with horses, combined with the profound impact chiropractic care had on her own scoliosis as a child, ultimately inspired her to pursue a career in chiropractic. She earned her Doctor of Chiropractic degree from Logan University in 2018. While attending Logan, Dr. Raquel developed a passion for the Gonstead System and was selected for additional clinical training through the Logan Gonstead Intern Program. She has since completed more than 300 hours of Gonstead-specific seminars and received mentorship from Dr. Jeff Lawlor, Dr. Richard Cranwell, and Drs. Hilary and Derrijk Hollon. In 2022, she earned the distinction of Gonstead Diplomate. Dr. Raquel also incorporates her lifelong love of animals into her professional work. She completed the intensive 226-hour program at Options for Animals College of Animal Chiropractic and holds certifications from both the American Veterinary Chiropractic Association (AVCA) and the International Veterinary Chiropractic Association (IVCA). Through Palmetto Chiropractic’s mobile animal practice, she provides chiropractic care for horses, dogs, cats, cattle, and hogs from Ocala to Orlando. Outside the clinic, Dr. Raquel enjoys spending time with her husband and daughter, riding horses, gardening, and caring for the family’s animals.</p></div></div>
       </div>
       </div>
     </article>
@@ -97,7 +104,7 @@
         <p class="har-visit__kicker">Ready to get started?</p>
         <p class="har-visit__h" data-sd="footer.visith">Book An Appointment</p>
         <p class="har-visit__body" data-sd="footer.visitbody">Call us at (352) 554-2545 or book your first visit online.</p>
-        <a class="har-btn har-btn--book" data-sd="footer.visitbtn" href="palmetto-contact-us.html">Come see what we can do for you!</a>
+        <a class="har-btn har-btn--book" data-sd="footer.visitbtn" href="palmetto-special.html">Come see what we can do for you!</a>
       </div>
     </div>
     </div>
@@ -114,13 +121,13 @@
       <div class="har-colophon__col har-colophon__col--hours">
         <p class="har-colophon__label">HOURS</p>
         <div class="har-hours" data-sd="footer.hours">
-        <div class="har-hours__row"><span>Monday</span><span></span></div>
-        <div class="har-hours__row"><span>Tuesday</span><span></span></div>
-        <div class="har-hours__row"><span>Wednesday</span><span></span></div>
-        <div class="har-hours__row"><span>Thursday</span><span></span></div>
-        <div class="har-hours__row"><span>Friday</span><span></span></div>
-        <div class="har-hours__row"><span>Saturday</span><span></span></div>
-        <div class="har-hours__row"><span>Sunday</span><span></span></div>
+        <div class="har-hours__row is-closed"><span>Monday</span><span>Closed</span></div>
+        <div class="har-hours__row"><span>Tuesday</span><span>9:00am - 3:00pm</span></div>
+        <div class="har-hours__row is-closed"><span>Wednesday</span><span>Closed</span></div>
+        <div class="har-hours__row"><span>Thursday</span><span>9:00am - 3:00pm</span></div>
+        <div class="har-hours__row is-closed"><span>Friday</span><span>Closed</span></div>
+        <div class="har-hours__row"><span>Saturday</span><span>9:00am - 12:00pm</span></div>
+        <div class="har-hours__row is-closed"><span>Sunday</span><span>Closed</span></div>
         </div>
       </div>
       <div class="har-colophon__col har-colophon__col--map">
@@ -130,7 +137,7 @@
       </div>
     </div>
     <div class="har-colophon__legal">
-      <p class="har-colophon__copy">Copyright © 2026 Local Ember. All Rights Reserved.</p>
+      <p class="har-colophon__copy">Copyright © 2026 Palmetto Chiropractic. All Rights Reserved.</p>
       <div class="har-colophon__links" data-sd="footer.legal">
       <a href="palmetto-accessibility.html">Accessibility</a>
       <a href="palmetto-anti-discrimination.html">Anti-Discrimination</a>

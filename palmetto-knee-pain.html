@@ -1,8 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta name="robots" content="noindex, nofollow"/>
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 🔴 NOINDEX IS THE SOURCE DEFAULT AND build.py's LIVE STAGE IS WHAT REMOVES IT (build.py:637,
+     "the one thing standing between a built site and a site Google is allowed to read"). Harbor's
+     emitter never wrote it -- sage's does -- so a Harbor client's REVIEW PREVIEW published her real
+     name, address and phone at a public URL with nothing telling Google to stay out. The live
+     preview only has it because somebody added it by hand last round; a rebuild would have dropped
+     it silently. Found 2026-09-17 while shipping Palmetto's client edits. -->
+<meta name="robots" content="noindex, nofollow">
 <title>Knee Pain Relief in Ocala, FL</title>
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/Poppins_400.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="assets/fonts/Poppins_700.woff2" crossorigin>
@@ -56,7 +63,7 @@
           </ul>
         </nav>
       </div>
-      <a class="har-btn har-btn--book" data-sd="header.book" href="palmetto-contact-us.html">Book Appointment</a>
+      <a class="har-btn har-btn--book" data-sd="header.book" href="palmetto-special.html">Book Appointment</a>
       <button class="har-menu-toggle" type="button" aria-label="Open Menu"
               aria-expanded="false"><span></span></button>
     </div>
@@ -71,7 +78,7 @@
       <h1 class="har-sshero__h" data-sd="cond.h1">Knee pain relief in Ocala</h1>
       <p class="har-sshero__sub">The knee is usually paying for how the joints around it move. Chiropractic care in Ocala for the knee, the hip, and the foot together.</p>
       <div class="har-sshero__actions">
-        <a class="har-btn har-btn--solid" href="palmetto-contact-us.html">Book an appointment</a>
+        <a class="har-btn har-btn--solid" href="palmetto-special.html">Book an appointment</a>
       </div>
     </div>
     <div class="har-sshero__media">
@@ -136,7 +143,7 @@
   <div class="har-svccta__inner">
     <h2 class="har-svccta__h" data-sd="cond.ctah">The knee is usually paying for something else.</h2>
     <p class="har-svccta__body">Same-week visits for new patients. Come as you are, we will take it from there.</p>
-    <a class="har-btn har-btn--solid" href="palmetto-contact-us.html">Book your first visit</a>
+    <a class="har-btn har-btn--solid" href="palmetto-special.html">Book your first visit</a>
   </div>
 </section>
 <section class="har-ssfaq" data-sd="cond.faq">
@@ -211,7 +218,7 @@
         <p class="har-visit__kicker">Ready to get started?</p>
         <p class="har-visit__h" data-sd="footer.visith">Book An Appointment</p>
         <p class="har-visit__body" data-sd="footer.visitbody">Call us at (352) 554-2545 or book your first visit online.</p>
-        <a class="har-btn har-btn--book" data-sd="footer.visitbtn" href="palmetto-contact-us.html">Come see what we can do for you!</a>
+        <a class="har-btn har-btn--book" data-sd="footer.visitbtn" href="palmetto-special.html">Come see what we can do for you!</a>
       </div>
     </div>
     </div>
@@ -228,13 +235,13 @@
       <div class="har-colophon__col har-colophon__col--hours">
         <p class="har-colophon__label">HOURS</p>
         <div class="har-hours" data-sd="footer.hours">
-        <div class="har-hours__row"><span>Monday</span><span></span></div>
-        <div class="har-hours__row"><span>Tuesday</span><span></span></div>
-        <div class="har-hours__row"><span>Wednesday</span><span></span></div>
-        <div class="har-hours__row"><span>Thursday</span><span></span></div>
-        <div class="har-hours__row"><span>Friday</span><span></span></div>
-        <div class="har-hours__row"><span>Saturday</span><span></span></div>
-        <div class="har-hours__row"><span>Sunday</span><span></span></div>
+        <div class="har-hours__row is-closed"><span>Monday</span><span>Closed</span></div>
+        <div class="har-hours__row"><span>Tuesday</span><span>9:00am - 3:00pm</span></div>
+        <div class="har-hours__row is-closed"><span>Wednesday</span><span>Closed</span></div>
+        <div class="har-hours__row"><span>Thursday</span><span>9:00am - 3:00pm</span></div>
+        <div class="har-hours__row is-closed"><span>Friday</span><span>Closed</span></div>
+        <div class="har-hours__row"><span>Saturday</span><span>9:00am - 12:00pm</span></div>
+        <div class="har-hours__row is-closed"><span>Sunday</span><span>Closed</span></div>
         </div>
       </div>
       <div class="har-colophon__col har-colophon__col--map">
@@ -244,7 +251,7 @@
       </div>
     </div>
     <div class="har-colophon__legal">
-      <p class="har-colophon__copy">Copyright © 2026 Local Ember. All Rights Reserved.</p>
+      <p class="har-colophon__copy">Copyright © 2026 Palmetto Chiropractic. All Rights Reserved.</p>
       <div class="har-colophon__links" data-sd="footer.legal">
       <a href="palmetto-accessibility.html">Accessibility</a>
       <a href="palmetto-anti-discrimination.html">Anti-Discrimination</a>
